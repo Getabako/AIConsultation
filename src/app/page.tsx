@@ -2,6 +2,35 @@
 
 import { useState, useRef, useEffect, FormEvent } from "react";
 
+const LOADING_TEXTS = [
+  "AIが考えています...",
+  "分析中...",
+  "回答を準備中...",
+  "もう少しお待ちください...",
+];
+
+function LoadingAnimation() {
+  const [textIndex, setTextIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTextIndex((prev) => (prev + 1) % LOADING_TEXTS.length);
+    }, 2500);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="loading-dots-container">
+      <div className="loading-dots-row">
+        <div className="loading-dot" />
+        <div className="loading-dot" />
+        <div className="loading-dot" />
+      </div>
+      <div className="loading-text">{LOADING_TEXTS[textIndex]}</div>
+    </div>
+  );
+}
+
 export default function Home() {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
@@ -101,21 +130,28 @@ export default function Home() {
         padding: "40px 20px 120px",
         transition: "all 0.3s ease",
       }}>
-        {/* Logo */}
+        {/* Title */}
         <div
           onClick={handleNewQuestion}
+          className="gradient-title"
           style={{
             cursor: "pointer",
             fontSize: asked ? "28px" : "56px",
             fontWeight: 700,
-            color: "#4285F4",
-            marginBottom: asked ? "20px" : "40px",
-            transition: "all 0.3s ease",
+            marginBottom: asked ? "8px" : "12px",
+            transition: "font-size 0.3s ease, margin 0.3s ease",
             userSelect: "none",
           }}
         >
           AI相談室
         </div>
+
+        {/* Subtitle */}
+        {!asked && (
+          <div className="subtitle" style={{ marginBottom: "36px" }}>
+            AIについて何でも聞いてください
+          </div>
+        )}
 
         {/* Search Bar */}
         <form onSubmit={handleSubmit} style={{
@@ -123,17 +159,18 @@ export default function Home() {
           maxWidth: "900px",
           marginBottom: "24px",
         }}>
-          <div style={{
-            display: "flex",
-            alignItems: "center",
-            border: "1px solid #dfe1e5",
-            borderRadius: "24px",
-            padding: "10px 20px",
-            boxShadow: "0 1px 6px rgba(32,33,36,0.08)",
-            transition: "box-shadow 0.2s",
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 1px 6px rgba(32,33,36,0.2)")}
-          onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "0 1px 6px rgba(32,33,36,0.08)")}
+          <div
+            className="search-bar"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              border: "1px solid #dfe1e5",
+              borderRadius: "24px",
+              padding: "12px 20px",
+              boxShadow: "0 1px 6px rgba(32,33,36,0.08)",
+              background: "rgba(255,255,255,0.85)",
+              backdropFilter: "blur(8px)",
+            }}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style={{ marginRight: "12px", flexShrink: 0 }}>
               <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="#9aa0a6"/>
@@ -174,16 +211,17 @@ export default function Home() {
             <button
               type="submit"
               disabled={loading || !question.trim()}
+              className="btn-primary"
               style={{
-                padding: "10px 24px",
-                fontSize: "14px",
+                padding: "12px 28px",
+                fontSize: "15px",
                 fontFamily: "inherit",
-                backgroundColor: loading ? "#ccc" : "#4285F4",
+                background: loading ? "#ccc" : "linear-gradient(135deg, #4285F4, #7c3aed)",
                 color: "#fff",
                 border: "none",
-                borderRadius: "6px",
+                borderRadius: "8px",
                 cursor: loading ? "not-allowed" : "pointer",
-                fontWeight: 500,
+                fontWeight: 600,
               }}
             >
               {loading ? "回答中..." : "AI に聞く"}
@@ -195,10 +233,12 @@ export default function Home() {
         {asked && (
           <div
             ref={answerRef}
+            className="answer-card"
             style={{
               width: "100%",
               maxWidth: "900px",
-              background: "#f8f9fa",
+              background: "rgba(255,255,255,0.75)",
+              backdropFilter: "blur(12px)",
               borderRadius: "12px",
               padding: "24px 28px",
               marginTop: "8px",
@@ -206,7 +246,7 @@ export default function Home() {
               overflowY: "auto",
               lineHeight: 1.8,
               fontSize: "15px",
-              boxShadow: "0 1px 3px rgba(0,0,0,0.08)",
+              boxShadow: "0 4px 20px rgba(0,0,0,0.06)",
             }}
           >
             {answer ? (
@@ -215,7 +255,7 @@ export default function Home() {
 
                 {/* Email input section */}
                 {!loading && !emailSent && (
-                  <div style={{
+                  <div className="email-section" style={{
                     marginTop: "24px",
                     paddingTop: "20px",
                     borderTop: "1px solid #e0e0e0",
@@ -226,18 +266,18 @@ export default function Home() {
                       color: "#202124",
                       marginBottom: "12px",
                     }}>
-                      続きをメールで受け取る
+                      📩 続きをメールで受け取る
                     </p>
                     <p style={{
                       fontSize: "13px",
                       color: "#5f6368",
-                      marginBottom: "12px",
+                      marginBottom: "16px",
                     }}>
                       メールアドレスを入力すると、より詳しい回答をお送りします。
                     </p>
                     <form onSubmit={handleEmailSubmit} style={{
                       display: "flex",
-                      gap: "8px",
+                      gap: "10px",
                       flexWrap: "wrap",
                     }}>
                       <input
@@ -246,30 +286,33 @@ export default function Home() {
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="example@email.com"
                         required
+                        className="email-input"
                         style={{
                           flex: 1,
                           minWidth: "200px",
-                          padding: "10px 14px",
+                          padding: "12px 16px",
                           fontSize: "14px",
                           border: "1px solid #dfe1e5",
-                          borderRadius: "6px",
+                          borderRadius: "8px",
                           outline: "none",
                           fontFamily: "inherit",
+                          background: "rgba(255,255,255,0.8)",
                         }}
                       />
                       <button
                         type="submit"
                         disabled={emailSending}
+                        className="btn-primary"
                         style={{
-                          padding: "10px 20px",
+                          padding: "12px 24px",
                           fontSize: "14px",
                           fontFamily: "inherit",
-                          backgroundColor: emailSending ? "#ccc" : "#4285F4",
+                          background: emailSending ? "#ccc" : "linear-gradient(135deg, #4285F4, #7c3aed)",
                           color: "#fff",
                           border: "none",
-                          borderRadius: "6px",
+                          borderRadius: "8px",
                           cursor: emailSending ? "not-allowed" : "pointer",
-                          fontWeight: 500,
+                          fontWeight: 600,
                           whiteSpace: "nowrap",
                         }}
                       >
@@ -281,7 +324,7 @@ export default function Home() {
 
                 {/* Email sent confirmation */}
                 {emailSent && (
-                  <div style={{
+                  <div className="email-section" style={{
                     marginTop: "24px",
                     paddingTop: "20px",
                     borderTop: "1px solid #e0e0e0",
@@ -292,7 +335,7 @@ export default function Home() {
                       fontWeight: 600,
                       color: "#34a853",
                     }}>
-                      メールを送信しました！
+                      ✅ メールを送信しました！
                     </p>
                     <p style={{
                       fontSize: "13px",
@@ -305,22 +348,19 @@ export default function Home() {
                 )}
               </div>
             ) : (
-              <div style={{ textAlign: "center", color: "#9aa0a6" }}>
-                <div className="loading-dots">考え中</div>
-              </div>
+              <LoadingAnimation />
             )}
           </div>
         )}
       </main>
 
       {/* Banner CTA */}
-      <div style={{
-        background: "linear-gradient(135deg, #1a73e8 0%, #4285F4 50%, #669df6 100%)",
-        padding: "48px 20px",
+      <div className="banner-bg" style={{
+        padding: "56px 20px",
         textAlign: "center",
       }}>
         <p style={{
-          fontSize: "24px",
+          fontSize: "26px",
           fontWeight: 700,
           color: "#fff",
           marginBottom: "8px",
@@ -330,7 +370,7 @@ export default function Home() {
         <p style={{
           fontSize: "16px",
           color: "rgba(255,255,255,0.85)",
-          marginBottom: "24px",
+          marginBottom: "28px",
         }}>
           AIの専門家が直接ご相談に乗ります
         </p>
@@ -338,17 +378,17 @@ export default function Home() {
           href="https://forms.gle/JQVBdZdrUWGysvhaA"
           target="_blank"
           rel="noopener noreferrer"
+          className="banner-cta"
           style={{
             display: "inline-block",
-            padding: "16px 40px",
+            padding: "16px 44px",
             fontSize: "18px",
             fontWeight: 700,
-            color: "#1a73e8",
+            color: "#4285F4",
             backgroundColor: "#fff",
-            borderRadius: "8px",
+            borderRadius: "10px",
             textDecoration: "none",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
-            transition: "transform 0.2s, box-shadow 0.2s",
+            boxShadow: "0 4px 14px rgba(0,0,0,0.15)",
           }}
         >
           無料で相談する →
@@ -357,11 +397,11 @@ export default function Home() {
 
       {/* Footer */}
       <footer style={{
-        padding: "12px",
+        padding: "14px",
         textAlign: "center",
         fontSize: "12px",
         color: "#70757a",
-        background: "#f2f2f2",
+        background: "rgba(242,242,242,0.8)",
         borderTop: "1px solid #e0e0e0",
       }}>
         © 2025 IF塾 | AI相談室

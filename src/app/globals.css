@@ -6,7 +6,7 @@
 
 body {
   font-family: "Noto Sans JP", sans-serif;
-  background: #fff;
+  background: linear-gradient(135deg, #ffffff 0%, #eef2ff 50%, #f3e8ff 100%);
   color: #202124;
   min-height: 100vh;
 }
@@ -17,4 +17,159 @@ a {
 }
 a:hover {
   text-decoration: underline;
+}
+
+/* Title gradient text */
+.gradient-title {
+  background: linear-gradient(135deg, #4285F4 0%, #7c3aed 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: fadeInDown 0.8s ease-out;
+}
+
+/* Subtitle */
+.subtitle {
+  color: #6b7280;
+  font-size: 15px;
+  font-weight: 400;
+  animation: fadeIn 1s ease-out 0.3s both;
+}
+
+/* Fade in animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Bouncing dots */
+@keyframes bounce {
+  0%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-12px); }
+}
+
+.loading-dots-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 32px 0;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.loading-dots-row {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.loading-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4285F4, #7c3aed);
+  animation: bounce 1.2s ease-in-out infinite;
+}
+
+.loading-dot:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.loading-dot:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.loading-text {
+  font-size: 14px;
+  color: #9aa0a6;
+  animation: fadeInOut 3s ease-in-out infinite;
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+/* Answer card */
+.answer-card {
+  border-left: 3px solid transparent;
+  border-image: linear-gradient(180deg, #4285F4, #7c3aed) 1;
+  animation: fadeInUp 0.5s ease-out;
+}
+
+/* Search bar glow */
+.search-bar {
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.search-bar:hover {
+  box-shadow: 0 2px 12px rgba(66, 133, 244, 0.15) !important;
+  border-color: #c4d7f5 !important;
+}
+
+.search-bar:focus-within {
+  box-shadow: 0 2px 16px rgba(66, 133, 244, 0.3) !important;
+  border-color: #4285F4 !important;
+}
+
+/* Button animations */
+.btn-primary {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.btn-primary:not(:disabled):hover {
+  transform: scale(1.04);
+  box-shadow: 0 4px 14px rgba(66, 133, 244, 0.4);
+}
+
+.btn-primary:not(:disabled):active {
+  transform: scale(0.98);
+}
+
+/* Banner gradient animation */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.banner-bg {
+  background: linear-gradient(135deg, #1a73e8, #4285F4, #7c3aed, #4285F4, #1a73e8);
+  background-size: 300% 300%;
+  animation: gradientShift 8s ease infinite;
+}
+
+/* Banner CTA button */
+.banner-cta {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.banner-cta:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Email section fade in */
+.email-section {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Email input focus */
+.email-input {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.email-input:focus {
+  border-color: #4285F4 !important;
+  box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
 }

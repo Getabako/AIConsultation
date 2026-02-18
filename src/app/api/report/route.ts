@@ -57,7 +57,7 @@ ${answer}`
     const resend = new Resend(resendKey);
 
     await resend.emails.send({
-      from: "AI相談室 <noreply@if-juku.net>",
+      from: "AI相談室 <onboarding@resend.dev>",
       to: email,
       subject: "【AI相談室】ご相談の回答",
       html: `
