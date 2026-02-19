@@ -1,6 +1,22 @@
 "use client";
 
 import { useState, useRef, useEffect, FormEvent } from "react";
+import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
+
+function AIConsultationInner() {
+  const searchParams = useSearchParams();
+  const isEmbed = searchParams.get("embed") === "1";
+  return <Home embed={isEmbed} />;
+}
+
+export default function Page() {
+  return (
+    <Suspense>
+      <AIConsultationInner />
+    </Suspense>
+  );
+}
 
 const LOADING_TEXTS = [
   "AIが考えています...",
@@ -31,7 +47,7 @@ function LoadingAnimation() {
   );
 }
 
-export default function Home() {
+function Home({ embed = false }: { embed?: boolean }) {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [loading, setLoading] = useState(false);
@@ -40,6 +56,13 @@ export default function Home() {
   const [emailSending, setEmailSending] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
   const answerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (embed) {
+      document.body.classList.add("embed-dark");
+    }
+    return () => { document.body.classList.remove("embed-dark"); };
+  }, [embed]);
 
   useEffect(() => {
     if (answerRef.current) {
@@ -120,7 +143,7 @@ export default function Home() {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+    <div style={{ display: "flex", flexDirection: "column", minHeight: embed ? "auto" : "100vh", background: embed ? "transparent" : undefined }}>
       <main style={{
         display: "flex",
         flexDirection: "column",
@@ -409,55 +432,59 @@ export default function Home() {
       </main>
 
       {/* Banner CTA */}
-      <div className="banner-bg" style={{
-        padding: "16px 20px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: "24px",
-        flexWrap: "wrap",
-      }}>
-        <p style={{
-          fontSize: "15px",
-          color: "#fff",
-          margin: 0,
+      {!embed && (
+        <div className="banner-bg" style={{
+          padding: "16px 20px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "24px",
+          flexWrap: "wrap",
         }}>
-          <span style={{ fontWeight: 700 }}>もっと詳しく知りたい方は</span>
-          <span style={{ opacity: 0.85, marginLeft: "8px" }}>- AIの専門家が直接ご相談に乗ります</span>
-        </p>
-        <a
-          href="https://forms.gle/JQVBdZdrUWGysvhaA"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="banner-cta"
-          style={{
-            display: "inline-block",
-            padding: "10px 28px",
-            fontSize: "14px",
-            fontWeight: 700,
-            color: "#4285F4",
-            backgroundColor: "#fff",
-            borderRadius: "8px",
-            textDecoration: "none",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-            whiteSpace: "nowrap",
-          }}
-        >
-          無料で相談する →
-        </a>
-      </div>
+          <p style={{
+            fontSize: "15px",
+            color: "#fff",
+            margin: 0,
+          }}>
+            <span style={{ fontWeight: 700 }}>もっと詳しく知りたい方は</span>
+            <span style={{ opacity: 0.85, marginLeft: "8px" }}>- AIの専門家が直接ご相談に乗ります</span>
+          </p>
+          <a
+            href="https://forms.gle/JQVBdZdrUWGysvhaA"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="banner-cta"
+            style={{
+              display: "inline-block",
+              padding: "10px 28px",
+              fontSize: "14px",
+              fontWeight: 700,
+              color: "#4285F4",
+              backgroundColor: "#fff",
+              borderRadius: "8px",
+              textDecoration: "none",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+              whiteSpace: "nowrap",
+            }}
+          >
+            無料で相談する →
+          </a>
+        </div>
+      )}
 
       {/* Footer */}
-      <footer style={{
-        padding: "14px",
-        textAlign: "center",
-        fontSize: "12px",
-        color: "#70757a",
-        background: "rgba(242,242,242,0.8)",
-        borderTop: "1px solid #e0e0e0",
-      }}>
-        © 2025 IF塾 | AI相談室
-      </footer>
+      {!embed && (
+        <footer style={{
+          padding: "14px",
+          textAlign: "center",
+          fontSize: "12px",
+          color: "#70757a",
+          background: "rgba(242,242,242,0.8)",
+          borderTop: "1px solid #e0e0e0",
+        }}>
+          © 2025 IF塾 | AI相談室
+        </footer>
+      )}
     </div>
   );
 }

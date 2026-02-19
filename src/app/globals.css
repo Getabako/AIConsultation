@@ -249,3 +249,64 @@ a:hover {
   border-color: #4285F4 !important;
   box-shadow: 0 0 0 4px rgba(66, 133, 244, 0.15);
 }
+
+/* Embed dark theme - matches parent site */
+body.embed-dark {
+  background: transparent !important;
+  color: #e2e8f0;
+}
+
+body.embed-dark .search-bar {
+  background: rgba(30, 41, 59, 0.8) !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
+  backdrop-filter: blur(12px);
+}
+
+body.embed-dark .search-bar input {
+  color: #e2e8f0 !important;
+}
+
+body.embed-dark .search-bar input::placeholder {
+  color: rgba(255,255,255,0.4) !important;
+}
+
+body.embed-dark .answer-card {
+  background: rgba(30, 41, 59, 0.8) !important;
+  backdrop-filter: blur(12px);
+  color: #e2e8f0;
+  border-image: linear-gradient(180deg, #3b82f6, #6366f1) 1;
+}
+
+body.embed-dark .gradient-title {
+  background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+body.embed-dark .subtitle {
+  color: rgba(255,255,255,0.6);
+}
+
+body.embed-dark .btn-primary {
+  background: linear-gradient(135deg, #3b82f6, #6366f1) !important;
+}
+
+body.embed-dark .option-btn,
+body.embed-dark .email-cta-section {
+  background: rgba(30, 41, 59, 0.6) !important;
+  color: #e2e8f0;
+}
+
+body.embed-dark .email-input {
+  background: rgba(15, 23, 42, 0.8) !important;
+  color: #e2e8f0 !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
+}
+
+body.embed-dark .email-cta-section p {
+  color: rgba(255,255,255,0.8) !important;
+}
+
+body.embed-dark .email-cta-section p strong {
+  color: #60a5fa !important;
+}
