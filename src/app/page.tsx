@@ -127,7 +127,7 @@ export default function Home() {
         alignItems: "center",
         justifyContent: asked ? "flex-start" : "center",
         flex: 1,
-        padding: "40px 20px 120px",
+        padding: asked ? "20px 20px 20px" : "40px 20px 120px",
         transition: "all 0.3s ease",
       }}>
         {/* Title */}
@@ -242,8 +242,6 @@ export default function Home() {
               borderRadius: "12px",
               padding: "24px 28px",
               marginTop: "8px",
-              maxHeight: "60vh",
-              overflowY: "auto",
               lineHeight: 1.8,
               fontSize: "15px",
               boxShadow: "0 4px 20px rgba(0,0,0,0.06)",
@@ -255,94 +253,150 @@ export default function Home() {
 
                 {/* Email input section */}
                 {!loading && !emailSent && (
-                  <div className="email-section" style={{
-                    marginTop: "24px",
-                    paddingTop: "20px",
-                    borderTop: "1px solid #e0e0e0",
+                  <div className="email-cta-section" style={{
+                    marginTop: "28px",
+                    padding: "24px",
+                    background: "linear-gradient(135deg, #f0f4ff 0%, #f5f0ff 100%)",
+                    borderRadius: "12px",
+                    border: "1px solid rgba(66, 133, 244, 0.15)",
+                    position: "relative",
+                    overflow: "hidden",
                   }}>
-                    <p style={{
-                      fontSize: "15px",
-                      fontWeight: 600,
-                      color: "#202124",
-                      marginBottom: "12px",
-                    }}>
-                      📩 続きをメールで受け取る
-                    </p>
-                    <p style={{
-                      fontSize: "13px",
-                      color: "#5f6368",
-                      marginBottom: "16px",
-                    }}>
-                      メールアドレスを入力すると、より詳しい回答をお送りします。
-                    </p>
-                    <form onSubmit={handleEmailSubmit} style={{
-                      display: "flex",
-                      gap: "10px",
-                      flexWrap: "wrap",
-                    }}>
-                      <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="example@email.com"
-                        required
-                        className="email-input"
-                        style={{
-                          flex: 1,
-                          minWidth: "200px",
-                          padding: "12px 16px",
-                          fontSize: "14px",
-                          border: "1px solid #dfe1e5",
-                          borderRadius: "8px",
-                          outline: "none",
-                          fontFamily: "inherit",
-                          background: "rgba(255,255,255,0.8)",
-                        }}
-                      />
-                      <button
-                        type="submit"
-                        disabled={emailSending}
-                        className="btn-primary"
-                        style={{
-                          padding: "12px 24px",
-                          fontSize: "14px",
-                          fontFamily: "inherit",
-                          background: emailSending ? "#ccc" : "linear-gradient(135deg, #4285F4, #7c3aed)",
+                    <div className="email-cta-glow" />
+                    <div style={{ position: "relative", zIndex: 1 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
+                        <div className="email-icon-pulse" style={{
+                          width: "36px",
+                          height: "36px",
+                          borderRadius: "50%",
+                          background: "linear-gradient(135deg, #4285F4, #7c3aed)",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontSize: "16px",
                           color: "#fff",
-                          border: "none",
-                          borderRadius: "8px",
-                          cursor: emailSending ? "not-allowed" : "pointer",
-                          fontWeight: 600,
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        {emailSending ? "送信中..." : "送信する"}
-                      </button>
-                    </form>
+                          flexShrink: 0,
+                        }}>
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                            <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" fill="white"/>
+                          </svg>
+                        </div>
+                        <p style={{
+                          fontSize: "16px",
+                          fontWeight: 700,
+                          color: "#202124",
+                          margin: 0,
+                        }}>
+                          続きをメールで無料でお届けします
+                        </p>
+                      </div>
+                      <p style={{
+                        fontSize: "13px",
+                        color: "#5f6368",
+                        marginBottom: "16px",
+                        lineHeight: 1.7,
+                        paddingLeft: "46px",
+                      }}>
+                        AIによる詳細な回答は生成コストがかかるため、このページでは要約のみ表示しています。メールアドレスをご入力いただくと、具体的な手順・ツール名・事例を含む<strong style={{ color: "#4285F4" }}>フル回答</strong>を無料でお送りします。
+                      </p>
+                      <form onSubmit={handleEmailSubmit} style={{
+                        display: "flex",
+                        gap: "10px",
+                        flexWrap: "wrap",
+                        paddingLeft: "46px",
+                      }}>
+                        <input
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="メールアドレスを入力"
+                          required
+                          className="email-input"
+                          style={{
+                            flex: 1,
+                            minWidth: "200px",
+                            padding: "13px 16px",
+                            fontSize: "14px",
+                            border: "2px solid #d4d8ff",
+                            borderRadius: "10px",
+                            outline: "none",
+                            fontFamily: "inherit",
+                            background: "#fff",
+                          }}
+                        />
+                        <button
+                          type="submit"
+                          disabled={emailSending}
+                          className="btn-email-send"
+                          style={{
+                            padding: "13px 28px",
+                            fontSize: "14px",
+                            fontFamily: "inherit",
+                            background: emailSending ? "#ccc" : "linear-gradient(135deg, #4285F4, #7c3aed)",
+                            color: "#fff",
+                            border: "none",
+                            borderRadius: "10px",
+                            cursor: emailSending ? "not-allowed" : "pointer",
+                            fontWeight: 700,
+                            whiteSpace: "nowrap",
+                            letterSpacing: "0.5px",
+                          }}
+                        >
+                          {emailSending ? "送信中..." : "無料で受け取る"}
+                        </button>
+                      </form>
+                      <p style={{
+                        fontSize: "11px",
+                        color: "#9aa0a6",
+                        marginTop: "10px",
+                        paddingLeft: "46px",
+                      }}>
+                        ※ 営業メール等は一切お送りしません
+                      </p>
+                    </div>
                   </div>
                 )}
 
                 {/* Email sent confirmation */}
                 {emailSent && (
-                  <div className="email-section" style={{
-                    marginTop: "24px",
-                    paddingTop: "20px",
-                    borderTop: "1px solid #e0e0e0",
+                  <div className="email-sent-section" style={{
+                    marginTop: "28px",
+                    padding: "24px",
+                    background: "linear-gradient(135deg, #f0faf4 0%, #e8f5e9 100%)",
+                    borderRadius: "12px",
+                    border: "1px solid rgba(52, 168, 83, 0.2)",
                     textAlign: "center",
                   }}>
-                    <p style={{
-                      fontSize: "15px",
-                      fontWeight: 600,
-                      color: "#34a853",
+                    <div style={{
+                      width: "48px",
+                      height: "48px",
+                      borderRadius: "50%",
+                      background: "linear-gradient(135deg, #34a853, #2e7d32)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      margin: "0 auto 12px",
+                      fontSize: "22px",
+                      color: "#fff",
                     }}>
-                      ✅ メールを送信しました！
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" fill="white"/>
+                      </svg>
+                    </div>
+                    <p style={{
+                      fontSize: "16px",
+                      fontWeight: 700,
+                      color: "#2e7d32",
+                    }}>
+                      メールを送信しました
                     </p>
                     <p style={{
                       fontSize: "13px",
                       color: "#5f6368",
-                      marginTop: "4px",
+                      marginTop: "6px",
+                      lineHeight: 1.6,
                     }}>
-                      詳しい回答をメールでお届けしました。ご確認ください。
+                      詳しい回答をメールでお届けしました。<br />受信トレイをご確認ください。
                     </p>
                   </div>
                 )}
@@ -356,23 +410,20 @@ export default function Home() {
 
       {/* Banner CTA */}
       <div className="banner-bg" style={{
-        padding: "56px 20px",
-        textAlign: "center",
+        padding: "16px 20px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: "24px",
+        flexWrap: "wrap",
       }}>
         <p style={{
-          fontSize: "26px",
-          fontWeight: 700,
+          fontSize: "15px",
           color: "#fff",
-          marginBottom: "8px",
+          margin: 0,
         }}>
-          もっと詳しく知りたい方は
-        </p>
-        <p style={{
-          fontSize: "16px",
-          color: "rgba(255,255,255,0.85)",
-          marginBottom: "28px",
-        }}>
-          AIの専門家が直接ご相談に乗ります
+          <span style={{ fontWeight: 700 }}>もっと詳しく知りたい方は</span>
+          <span style={{ opacity: 0.85, marginLeft: "8px" }}>- AIの専門家が直接ご相談に乗ります</span>
         </p>
         <a
           href="https://forms.gle/JQVBdZdrUWGysvhaA"
@@ -381,14 +432,15 @@ export default function Home() {
           className="banner-cta"
           style={{
             display: "inline-block",
-            padding: "16px 44px",
-            fontSize: "18px",
+            padding: "10px 28px",
+            fontSize: "14px",
             fontWeight: 700,
             color: "#4285F4",
             backgroundColor: "#fff",
-            borderRadius: "10px",
+            borderRadius: "8px",
             textDecoration: "none",
-            boxShadow: "0 4px 14px rgba(0,0,0,0.15)",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+            whiteSpace: "nowrap",
           }}
         >
           無料で相談する →
