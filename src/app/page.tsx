@@ -60,9 +60,25 @@ function Home({ embed = false }: { embed?: boolean }) {
   useEffect(() => {
     if (embed) {
       document.body.classList.add("embed-dark");
+      document.documentElement.style.overflow = "hidden";
+      document.body.style.overflow = "hidden";
     }
     return () => { document.body.classList.remove("embed-dark"); };
   }, [embed]);
+
+  // postMessage で親に高さを通知
+  useEffect(() => {
+    if (!embed) return;
+    const sendHeight = () => {
+      const h = document.documentElement.scrollHeight;
+      window.parent.postMessage({ type: "ai-consultation-resize", height: h }, "*");
+    };
+    sendHeight();
+    const observer = new MutationObserver(sendHeight);
+    observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+    const interval = setInterval(sendHeight, 500);
+    return () => { observer.disconnect(); clearInterval(interval); };
+  }, [embed, asked, answer, loading, emailSent]);
 
   useEffect(() => {
     if (answerRef.current) {
