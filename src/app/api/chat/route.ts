@@ -84,8 +84,8 @@ export async function POST(req: NextRequest) {
           console.error("Stream error:", e);
         } finally {
           controller.close();
-          // Log to sheets async
-          appendToSheet(question, fullAnswer, email).catch(() => {});
+          // メール登録済みの場合のみシート記録（未登録は記録しない）
+          if (email) appendToSheet(question, fullAnswer, email).catch(() => {});
         }
       },
     });

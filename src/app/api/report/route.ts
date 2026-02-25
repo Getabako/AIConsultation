@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
+import { appendToSheet } from "@/lib/sheets";
 
 export async function POST(req: NextRequest) {
   try {
@@ -101,6 +102,9 @@ ${answer}`
 </body>
 </html>`,
     });
+
+    // メール送信時のみ、AI相談シートへ「メール・質問・回答」を保存
+    await appendToSheet(question, fullAnswer, email);
 
     return NextResponse.json({ success: true });
   } catch (error) {
