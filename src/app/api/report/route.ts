@@ -103,8 +103,14 @@ ${answer}`
 </html>`,
     });
 
-    // メール送信時のみ、AI相談シートへ「メール・質問・回答」を保存
-    await appendToSheet(question, fullAnswer, email);
+    // メール送信後、AI相談シートへ「メール・質問・回答」を保存（失敗してもメール送信は成功扱い）
+    try {
+      const q = String(question || "").slice(0, 5000);
+      const a = String(fullAnswer || "").slice(0, 45000); // Sheetsセル上限対策
+      await appendToSheet(q, a, email);
+    } catch (sheetError) {
+      console.error("Append to sheet failed:", sheetError);
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {
