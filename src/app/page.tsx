@@ -25,6 +25,13 @@ const LOADING_TEXTS = [
   "もう少しお待ちください...",
 ];
 
+const QUESTION_EXAMPLES = [
+  "例：AIで売上アップするには何から始めればいい？",
+  "例：SNS投稿をAIで効率化する方法を教えて",
+  "例：無料で使えるAIツールのおすすめは？",
+  "例：初心者向けにChatGPTの使い方を教えて",
+];
+
 function LoadingAnimation() {
   const [textIndex, setTextIndex] = useState(0);
 
@@ -55,6 +62,7 @@ function Home({ embed = false }: { embed?: boolean }) {
   const [email, setEmail] = useState("");
   const [emailSending, setEmailSending] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
+  const [exampleIndex, setExampleIndex] = useState(0);
   const answerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -71,6 +79,14 @@ function Home({ embed = false }: { embed?: boolean }) {
       answerRef.current.scrollTop = answerRef.current.scrollHeight;
     }
   }, [answer]);
+
+  useEffect(() => {
+    if (asked) return;
+    const interval = setInterval(() => {
+      setExampleIndex((prev) => (prev + 1) % QUESTION_EXAMPLES.length);
+    }, 2800);
+    return () => clearInterval(interval);
+  }, [asked]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -204,7 +220,7 @@ function Home({ embed = false }: { embed?: boolean }) {
               type="text"
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
-              placeholder="AIについて何でも聞いてください"
+              placeholder={QUESTION_EXAMPLES[exampleIndex]}
               style={{
                 flex: 1,
                 border: "none",
@@ -231,6 +247,33 @@ function Home({ embed = false }: { embed?: boolean }) {
               </button>
             )}
           </div>
+
+          {!asked && (
+            <div style={{
+              width: "100%",
+              maxWidth: "900px",
+              marginTop: "10px",
+              marginBottom: "8px",
+              textAlign: "center",
+            }}>
+              <div style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                flexWrap: "wrap",
+                justifyContent: "center",
+                padding: "8px 14px",
+                borderRadius: "999px",
+                background: "rgba(66,133,244,0.12)",
+                border: "1px solid rgba(66,133,244,0.28)",
+                color: "#dbeafe",
+                fontSize: "13px",
+              }}>
+                <span style={{ fontWeight: 700 }}>気軽にどうぞ</span>
+                <span style={{ opacity: 0.9 }}>AIの疑問・仕事・勉強・集客まで何でもOK</span>
+              </div>
+            </div>
+          )}
 
           <div style={{ display: "flex", justifyContent: "center", gap: "12px", marginTop: "20px" }}>
             <button
