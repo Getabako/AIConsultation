@@ -168,7 +168,7 @@ function Home({ embed = false }: { embed?: boolean }) {
         alignItems: "center",
         justifyContent: asked ? "flex-start" : "center",
         flex: 1,
-        padding: asked ? "20px 20px 20px" : "40px 20px 120px",
+        padding: asked ? "20px 20px 20px" : (embed ? "60px 20px 40px" : "40px 20px 120px"),
         transition: "all 0.3s ease",
       }}>
         {/* Title */}
