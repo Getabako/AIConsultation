@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
-          contents: [{ role: "user", parts: [{ text: `今日は${new Date().toISOString().slice(0, 10)}です。最新の情報を元に回答してください。\n\n質問: ${question}` }] }],
+          contents: [{ role: "user", parts: [{ text: `今日は${new Date().toISOString().slice(0, 10)}です。料金やツール情報は必ずGoogle検索で今日時点の最新情報を確認してから回答してください。古い情報は使わないでください。\n\n質問: ${question}` }] }],
           tools: [{ google_search: {} }],
         }),
       }
