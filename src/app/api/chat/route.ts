@@ -28,7 +28,8 @@ export async function POST(req: NextRequest) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
-          contents: [{ role: "user", parts: [{ text: question }] }],
+          contents: [{ role: "user", parts: [{ text: `今日は${new Date().toISOString().slice(0, 10)}です。最新の情報を元に回答してください。\n\n質問: ${question}` }] }],
+          tools: [{ google_search: {} }],
         }),
       }
     );

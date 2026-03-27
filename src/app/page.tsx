@@ -319,6 +319,13 @@ function Home({ embed = false }: { embed?: boolean }) {
               <div>
                 <div style={{ whiteSpace: "pre-wrap" }}>{answer}</div>
 
+                {/* 検索結果の注意書き */}
+                {!loading && answer && (
+                  <p style={{ fontSize: "11px", color: "#9ca3af", marginTop: "12px", lineHeight: 1.5 }}>
+                    ※ この回答はWeb検索の結果を含むため、情報が正確でない場合があります。重要な判断の際は公式情報をご確認ください。
+                  </p>
+                )}
+
                 {/* Email input section */}
                 {!loading && !emailSent && (
                   <div className="email-cta-section" style={{
